@@ -17,7 +17,7 @@ namespace Benchmarks
             var memoryDiagnoser = new BenchmarkDotNet.Diagnostics.Windows.MemoryDiagnoser();
 
             BenchmarkRunner
-                .Run<ValueTaskVsTask>(
+                .Run<TypicalScenario>(
                     ManualConfig.CreateEmpty()
                         //.With(Job.Dry.With(Runtime.Clr).With(Platform.X64).With(Framework.V46).With(Jit.RyuJit).With(Mode.Throughput).WithWarmupCount(1).WithTargetCount(1))
                         .With(Job.Dry.With(Runtime.Core).With(Platform.X64).With(Jit.RyuJit).With(Mode.Throughput).WithWarmupCount(1).WithTargetCount(1))
