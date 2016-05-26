@@ -1,0 +1,24 @@
+<pre><code>
+BenchmarkDotNet-Dev=v0.9.6.0+
+OS=Microsoft Windows NT 6.2.9200.0
+Processor=Intel(R) Core(TM) i7-4700MQ CPU 2.40GHz, ProcessorCount=8
+Frequency=2338337 ticks, Resolution=427.6544 ns, Timer=TSC
+HostCLR=MS.NET 4.0.30319.42000, Arch=64-bit RELEASE [RyuJIT]
+JitModules=clrjit-v4.6.1055.0
+</code></pre>
+<pre><code>Runtime=Core  Platform=X64  Jit=RyuJit  
+</code></pre>
+
+<table>
+<tr><th>                   Method</th><th>Length</th><th>  Median</th><th>Scaled</th><th>Delta</th><th>Gen 0</th><th>Gen 1</th><th>Gen 2</th><th>Bytes Allocated/Op</th>
+</tr><tr><td>Allocating new array every time</td><td>100</td><td>12.8117 ns</td><td>1.00</td><td>Baseline</td><td>2,55</td><td>-</td><td>  -</td><td>       21,67</td>
+</tr><tr><td>Renting array from the pool</td><td>100</td><td>64.4245 ns</td><td>5.03</td><td>402.9%</td><td>-</td><td>-</td><td>  -</td><td>        0,01</td>
+</tr><tr><td>Allocating new array every time</td><td>1000</td><td>74.1064 ns</td><td>1.00</td><td>Baseline</td><td>22,24</td><td>-</td><td>  -</td><td>      209,46</td>
+</tr><tr><td>Renting array from the pool</td><td>1000</td><td>62.9374 ns</td><td>0.85</td><td>-15.1%</td><td>-</td><td>-</td><td>  -</td><td>        0,01</td>
+</tr><tr><td>Allocating new array every time</td><td>10000</td><td>656.8299 ns</td><td>1.00</td><td>Baseline</td><td>217,71</td><td>-</td><td>  -</td><td>    2.509,37</td>
+</tr><tr><td>Renting array from the pool</td><td>10000</td><td>60.8015 ns</td><td>0.09</td><td>-90.7%</td><td>-</td><td>-</td><td>  -</td><td>        0,01</td>
+</tr><tr><td>Allocating new array every time</td><td>100000</td><td>3,032.0091 ns</td><td>1.00</td><td>Baseline</td><td>-</td><td>-</td><td>2.238,92</td><td>   19.057,09</td>
+</tr><tr><td>Renting array from the pool</td><td>100000</td><td>63.0107 ns</td><td>0.02</td><td>-97.9%</td><td>-</td><td>-</td><td>  -</td><td>        0,01</td>
+</tr><tr><td>Allocating new array every time</td><td>1000000</td><td>14,356.6730 ns</td><td>1.00</td><td>Baseline</td><td>-</td><td>-</td><td>16.368,00</td><td>  173.919,72</td>
+</tr><tr><td>Renting array from the pool</td><td>1000000</td><td>60.3875 ns</td><td>0.00</td><td>-99.6%</td><td>-</td><td>-</td><td>  -</td><td>        0,02</td>
+</tr></table>
