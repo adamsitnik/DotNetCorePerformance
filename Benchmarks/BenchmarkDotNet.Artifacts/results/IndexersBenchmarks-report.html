@@ -1,0 +1,27 @@
+<pre><code>
+BenchmarkDotNet-Dev=v0.9.6.0+
+OS=Windows
+Processor=?, ProcessorCount=8
+Frequency=2338337 ticks, Resolution=427.6544 ns, Timer=TSC
+HostCLR=CORE, Arch=64-bit RELEASE [RyuJIT]
+JitModules=?
+1.0.0-preview1-002702
+</code></pre>
+<pre><code>Runtime=Core  Platform=X64  Jit=RyuJit  
+</code></pre>
+
+<table>
+<tr><th>Method</th><th>Length</th><th>Median</th><th>StdDev</th><th>Scaled</th><th>Delta</th>
+</tr><tr><td>ArrayIndexer</td><td>1</td><td>0.3122 ns</td><td>0.0000 ns</td><td>1.00</td><td>Baseline</td>
+</tr><tr><td>SliceIndexer</td><td>1</td><td>0.3720 ns</td><td>0.0000 ns</td><td>1.19</td><td>19.2%</td>
+</tr><tr><td>ListIndexer</td><td>1</td><td>1.0255 ns</td><td>0.0000 ns</td><td>3.28</td><td>228.5%</td>
+</tr><tr><td>ArrayIndexer</td><td>10</td><td>0.3292 ns</td><td>0.0000 ns</td><td>1.00</td><td>Baseline</td>
+</tr><tr><td>SliceIndexer</td><td>10</td><td>0.3077 ns</td><td>0.0000 ns</td><td>0.93</td><td>-6.6%</td>
+</tr><tr><td>ListIndexer</td><td>10</td><td>0.9509 ns</td><td>0.0000 ns</td><td>2.89</td><td>188.8%</td>
+</tr><tr><td>ArrayIndexer</td><td>100</td><td>0.3098 ns</td><td>0.0000 ns</td><td>1.00</td><td>Baseline</td>
+</tr><tr><td>SliceIndexer</td><td>100</td><td>0.2974 ns</td><td>0.0000 ns</td><td>0.96</td><td>-4.0%</td>
+</tr><tr><td>ListIndexer</td><td>100</td><td>0.8913 ns</td><td>0.0000 ns</td><td>2.88</td><td>187.7%</td>
+</tr><tr><td>ArrayIndexer</td><td>1000</td><td>0.3258 ns</td><td>0.0000 ns</td><td>1.00</td><td>Baseline</td>
+</tr><tr><td>SliceIndexer</td><td>1000</td><td>0.3512 ns</td><td>0.0000 ns</td><td>1.08</td><td>7.8%</td>
+</tr><tr><td>ListIndexer</td><td>1000</td><td>0.9817 ns</td><td>0.0000 ns</td><td>3.01</td><td>201.3%</td>
+</tr></table>

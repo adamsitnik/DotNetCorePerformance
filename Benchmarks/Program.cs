@@ -18,13 +18,13 @@ namespace Benchmarks
         public static void Main(string[] args)
         {
             var config = ManualConfig.CreateEmpty()
-                        //.With(Job.Dry.With(Runtime.Clr).With(Platform.X64).With(Framework.V46).With(Jit.RyuJit).With(Mode.Throughput).WithWarmupCount(1).WithTargetCount(1))
-                        .With(Job.Dry.With(Runtime.Core).With(Platform.X64).With(Jit.RyuJit).With(Mode.Throughput).WithWarmupCount(1).WithTargetCount(1))
-                        .With(DefaultConfig.Instance.GetLoggers().ToArray())
-                        .With(PropertyColumn.Method, PropertyColumn.Runtime, PropertyColumn.Platform, PropertyColumn.Jit, StatisticColumn.Median, BaselineDiffColumn.Scaled, BaselineDiffColumn.Delta)
-                        .With(MarkdownExporter.Default)
-                        .With(HtmlExporter.Default)
-                        .RemoveBenchmarkFiles();
+                //.With(Job.Dry.With(Runtime.Clr).With(Platform.X64).With(Framework.V46).With(Jit.RyuJit).With(Mode.Throughput).WithWarmupCount(1).WithTargetCount(1))
+                .With(Job.Dry.With(Runtime.Core).With(Platform.X64).With(Jit.RyuJit).With(Mode.Throughput).WithWarmupCount(1).WithTargetCount(1))
+                .With(DefaultConfig.Instance.GetLoggers().ToArray())
+                .With(PropertyColumn.Method, PropertyColumn.Runtime, PropertyColumn.Platform, PropertyColumn.Jit, StatisticColumn.Median, StatisticColumn.StdDev, BaselineDiffColumn.Scaled, BaselineDiffColumn.Delta)
+                .With(MarkdownExporter.Default)
+                .With(HtmlExporter.Default)
+                .RemoveBenchmarkFiles();
 
 #if CLASSIC
             // the parent process is Classic Desktop Clr, but the child process is CoreClr
@@ -33,7 +33,7 @@ namespace Benchmarks
 #endif
 
             BenchmarkRunner
-                .Run<ArrayPoolBenchmarks>(config);
+                .Run<ForLoopBenchmarks>(config);
         }
     }
 }

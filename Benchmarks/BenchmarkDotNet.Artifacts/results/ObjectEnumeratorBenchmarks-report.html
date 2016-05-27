@@ -1,0 +1,27 @@
+<pre><code>
+BenchmarkDotNet-Dev=v0.9.6.0+
+OS=Windows
+Processor=?, ProcessorCount=8
+Frequency=2338337 ticks, Resolution=427.6544 ns, Timer=TSC
+HostCLR=CORE, Arch=64-bit RELEASE [RyuJIT]
+JitModules=?
+1.0.0-preview1-002702
+</code></pre>
+<pre><code>Runtime=Core  Platform=X64  Jit=RyuJit  
+</code></pre>
+
+<table>
+<tr><th>         Method</th><th>Length</th><th> Median</th><th>StdDev</th><th>Scaled</th><th>Delta</th>
+</tr><tr><td>ArrayObjectEnumerator</td><td>1</td><td>23.0499 ns</td><td>0.0000 ns</td><td>1.00</td><td>Baseline</td>
+</tr><tr><td>SliceObjectEnumerator</td><td>1</td><td>57.9466 ns</td><td>0.0000 ns</td><td>2.51</td><td>151.4%</td>
+</tr><tr><td>ListObjectEnumerator</td><td>1</td><td>29.1351 ns</td><td>0.0000 ns</td><td>1.26</td><td>26.4%</td>
+</tr><tr><td>ArrayObjectEnumerator</td><td>10</td><td>84.3073 ns</td><td>0.0000 ns</td><td>1.00</td><td>Baseline</td>
+</tr><tr><td>SliceObjectEnumerator</td><td>10</td><td>108.3210 ns</td><td>0.0000 ns</td><td>1.28</td><td>28.5%</td>
+</tr><tr><td>ListObjectEnumerator</td><td>10</td><td>108.9271 ns</td><td>0.0000 ns</td><td>1.29</td><td>29.2%</td>
+</tr><tr><td>ArrayObjectEnumerator</td><td>100</td><td>823.8347 ns</td><td>0.0000 ns</td><td>1.00</td><td>Baseline</td>
+</tr><tr><td>SliceObjectEnumerator</td><td>100</td><td>618.1289 ns</td><td>0.0000 ns</td><td>0.75</td><td>-25.0%</td>
+</tr><tr><td>ListObjectEnumerator</td><td>100</td><td>747.3437 ns</td><td>0.0000 ns</td><td>0.91</td><td>-9.3%</td>
+</tr><tr><td>ArrayObjectEnumerator</td><td>1000</td><td>6,804.6740 ns</td><td>0.0000 ns</td><td>1.00</td><td>Baseline</td>
+</tr><tr><td>SliceObjectEnumerator</td><td>1000</td><td>5,610.0041 ns</td><td>0.0000 ns</td><td>0.82</td><td>-17.6%</td>
+</tr><tr><td>ListObjectEnumerator</td><td>1000</td><td>6,992.8430 ns</td><td>0.0000 ns</td><td>1.03</td><td>2.8%</td>
+</tr></table>
