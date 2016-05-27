@@ -10,8 +10,9 @@ namespace Benchmarks
     public class Program
     {
         /// <summary>
-        /// execute from cmd with "dotnet run --framework net46 --configuration Release" (with Memory Diagnostics)
-        /// or execute from cmd with "dotnet run --framework netcoreapp1.0 --configuration Release" (without Memory Diagnostics but cross platform)
+        /// execute from cmd with: 
+        ///     "dotnet run --framework net46 --configuration Release" (with Memory Diagnostics)
+        ///     "dotnet run --framework netcoreapp1.0 --configuration Release" (without Memory Diagnostics but cross platform)
         /// </summary>
         /// <param name="args"></param>
         public static void Main(string[] args)
@@ -26,6 +27,8 @@ namespace Benchmarks
                         .RemoveBenchmarkFiles();
 
 #if CLASSIC
+            // the parent process is Classic Desktop Clr, but the child process is CoreClr
+            // so we can use memory diagnoser and attach to it and get it working for .NET Core!
             config = config.With(new BenchmarkDotNet.Diagnostics.Windows.MemoryDiagnoser());
 #endif
 
