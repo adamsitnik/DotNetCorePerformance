@@ -21,9 +21,7 @@ namespace Benchmarks
         [Setup]
         public void Setup()
         {
-            // the default for max size is 2MB, taken as the default since the average HTTP page is 1.9MB
-            // per http://httparchive.org/interesting.php, as of October 2015
-            // so here I set it in explicit way
+            // default is 2^20
             _dedicatedManagedPool = ArrayPool<byte>.Create(maxArrayLength: Bytes + 1, maxArraysPerBucket: 1);
         }
 
