@@ -1,27 +1,24 @@
 ﻿using BenchmarkDotNet.Attributes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Benchmarks
 {
-    public class ValueTaskVsTask
+    public class ValueTaskVsTaskCreation
     {
         [Benchmark(Baseline = true, Description = "Creating instance of Task via Task.FromResult")]
-        public Task<ValueTaskVsTask> TaskFromResult()
+        public Task<ValueTaskVsTaskCreation> TaskFromResult()
         {
             return Task.FromResult(this);
         }
 
         [Benchmark(Description = "Creating instance of Value Task via constructor call")]
-        public ValueTask<ValueTaskVsTask> ValueTaskCtor()
+        public ValueTask<ValueTaskVsTaskCreation> ValueTaskCtor()
         {
-            return new ValueTask<ValueTaskVsTask>(this);
+            return new ValueTask<ValueTaskVsTaskCreation>(this);
         }
 
         [Benchmark(Description = "Creating instance of Value Task via call to FromResult")]
-        public ValueTask<ValueTaskVsTask> ValueTaskFromResult()
+        public ValueTask<ValueTaskVsTaskCreation> ValueTaskFromResult()
         {
             return FromResult(this);
         }
