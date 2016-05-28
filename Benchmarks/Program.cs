@@ -33,7 +33,7 @@ namespace Benchmarks
 #endif
 
             BenchmarkRunner
-                .Run<ObjectEnumeratorBenchmarks>(config);
+                .Run<SpanVsMemcmp>(config);
         }
     }
 }
