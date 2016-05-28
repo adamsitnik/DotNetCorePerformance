@@ -33,7 +33,7 @@ namespace Benchmarks
 #endif
 
             BenchmarkRunner
-                .Run<ForLoopBenchmarks>(config);
+                .Run<ObjectEnumeratorBenchmarks>(config);
         }
     }
 }

@@ -22,6 +22,9 @@ namespace Benchmarks
             slice = array.Slice();
             list = array.ToList();
         }
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        protected static void Blackhole<T>(T input) { }
     }
 
     public class IndexersBenchmarks : SliceVsArrayVsList
@@ -48,104 +51,90 @@ namespace Benchmarks
     public class ForLoopBenchmarks : SliceVsArrayVsList
     {
         [Benchmark(Baseline = true)]
-        public int ArrayForLoop()
+        public void ArrayForLoop()
         {
-            int sum = 0;
             for (int i = 0; i < array.Length; i++)
             {
-                sum += array[i];
+                Blackhole(array[i]);
             }
-            return sum;
         }
 
         [Benchmark]
-        public int SliceForLoop()
+        public void SliceForLoop()
         {
-            int sum = 0;
             for (int i = 0; i < slice.Length; i++)
             {
-                sum += slice[i];
+                Blackhole(slice[i]);
             }
-            return sum;
         }
 
         [Benchmark]
-        public int ListForLoop()
+        public void ListForLoop()
         {
-            int sum = 0;
             for (int i = 0; i < list.Count; i++)
             {
-                sum += list[i];
+                Blackhole(list[i]);
             }
-            return sum;
         }
     }
 
     public class StrongEnumeratorBenchmarks : SliceVsArrayVsList
     {
         [Benchmark(Baseline = true)]
-        public int ArrayStrongEnumerator()
+        public void ArrayStrongEnumerator()
         {
-            int sum = 0;
             foreach (var item in array)
             {
-                sum += item;
+                Blackhole(item);
             }
-            return sum;
         }
 
         [Benchmark]
-        public int SliceStrongEnumerator()
+        public void SliceStrongEnumerator()
         {
-            int sum = 0;
             foreach (var item in slice)
             {
-                sum += item;
+                Blackhole(item);
             }
-            return sum;
         }
 
         [Benchmark]
-        public int ListStrongEnumerator()
+        public void ListStrongEnumerator()
         {
-            int sum = 0;
             foreach (var item in list)
             {
-                sum += item;
+                Blackhole(item);
             }
-            return sum;
         }
     }
 
     public class ObjectEnumeratorBenchmarks : SliceVsArrayVsList
     {
         [Benchmark(Baseline = true)]
-        public int ArrayObjectEnumerator()
+        public void ArrayObjectEnumerator()
         {
-            return IterateOverEnumerable(array);
+            IterateOverEnumerable(array);
         }
 
         [Benchmark]
-        public int SliceObjectEnumerator()
+        public void SliceObjectEnumerator()
         {
-            return IterateOverEnumerable(slice);
+            IterateOverEnumerable(slice);
         }
 
         [Benchmark]
-        public int ListObjectEnumerator()
+        public void ListObjectEnumerator()
         {
-            return IterateOverEnumerable(list);
+            IterateOverEnumerable(list);
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
-        private int IterateOverEnumerable(IEnumerable<int> enumerable)
+        private void IterateOverEnumerable(IEnumerable<int> enumerable)
         {
-            int sum = 0;
             foreach (var item in enumerable)
             {
-                sum += item;
+                Blackhole(item);
             }
-            return sum;
         }
     }
 }
