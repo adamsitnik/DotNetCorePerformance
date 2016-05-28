@@ -26,17 +26,17 @@ namespace Benchmarks
                 .With(HtmlExporter.Default)
                 //.With(CsvMeasurementsExporter.Default)
                 //.With(RPlotExporter.Default)
-                .RemoveBenchmarkFiles();
+                .KeepBenchmarkFiles();
 
 #if CLASSIC
             // the parent process is Classic Desktop Clr, but the child process is CoreClr
             // so we can use memory diagnoser and attach to it and get it working for .NET Core!
             config = config.With(new BenchmarkDotNet.Diagnostics.Windows.MemoryDiagnoser());
-            config = config.With(new BenchmarkDotNet.Diagnostics.Windows.InliningDiagnoser());
+            //config = config.With(new BenchmarkDotNet.Diagnostics.Windows.InliningDiagnoser());
 #endif
 
             BenchmarkRunner
-                .Run<ValueTaskVsTaskRecommendedScenario>(config);
+                .Run<UnsafeApi>(config);
         }
     }
 }
