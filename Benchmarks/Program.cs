@@ -26,7 +26,7 @@ namespace Benchmarks
                 .With(HtmlExporter.Default)
                 //.With(CsvMeasurementsExporter.Default)
                 //.With(RPlotExporter.Default)
-                .KeepBenchmarkFiles();
+                .RemoveBenchmarkFiles();
 
 #if CLASSIC
             // the parent process is Classic Desktop Clr, but the child process is CoreClr
@@ -36,7 +36,7 @@ namespace Benchmarks
 #endif
 
             BenchmarkRunner
-                .Run<UnsafeApi>(config);
+                .Run<ArrayPoolBenchmarks>(config);
         }
     }
 }

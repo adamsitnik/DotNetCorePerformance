@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Linq;
 using BenchmarkDotNet.Attributes;
 
-namespace Benchmarks
+namespace Benchmarks.RC4
 {
     public class UnsafeApi
     {
