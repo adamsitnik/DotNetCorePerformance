@@ -23,7 +23,7 @@
         "define": [ "CLASSIC" ]
       },
       "dependencies": {
-        "BenchmarkDotNet.Diagnostics.Windows": "0.9.6"
+        "BenchmarkDotNet.Diagnostics.Windows": "0.9.7"
       },
       "frameworkAssemblies": {
         "System.Threading.Tasks": "4.0.10.0"

@@ -19,13 +19,13 @@ namespace Benchmarks
         {
             var config = ManualConfig.CreateEmpty()
                 //.With(Job.Dry.With(Runtime.Clr).With(Platform.X64).With(Framework.V46).With(Jit.RyuJit).With(Mode.Throughput).WithWarmupCount(1).WithTargetCount(1))
-                .With(Job.Dry.With(Runtime.Core).With(Platform.X64).With(Jit.RyuJit).With(Mode.Throughput).WithWarmupCount(1).WithTargetCount(1))
+                .With(Job.Dry.With(Runtime.Core).With(Platform.X64).With(Jit.RyuJit).With(Mode.Throughput).WithWarmupCount(1).WithTargetCount(20))
                 .With(DefaultConfig.Instance.GetLoggers().ToArray())
                 .With(PropertyColumn.Method, PropertyColumn.Runtime, PropertyColumn.Platform, PropertyColumn.Jit, StatisticColumn.Median, StatisticColumn.StdDev, BaselineDiffColumn.Scaled, BaselineDiffColumn.Delta)
                 .With(MarkdownExporter.Default)
                 .With(HtmlExporter.Default)
-                //.With(CsvMeasurementsExporter.Default)
-                //.With(RPlotExporter.Default)
+                .With(CsvMeasurementsExporter.Default)
+                .With(RPlotExporter.Default)
                 .RemoveBenchmarkFiles();
 
 #if CLASSIC
@@ -36,7 +36,7 @@ namespace Benchmarks
 #endif
 
             BenchmarkRunner
-                .Run<ArrayPoolBenchmarks>(config);
+                .Run<ValueTaskVsTaskCreation>(config);
         }
     }
 }

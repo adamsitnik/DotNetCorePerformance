@@ -1,0 +1,17 @@
+<pre><code>
+BenchmarkDotNet=v0.9.7.0
+OS=Microsoft Windows NT 6.2.9200.0
+Processor=Intel(R) Core(TM) i7-4700MQ CPU 2.40GHz, ProcessorCount=8
+Frequency=2338327 ticks, Resolution=427.6562 ns, Timer=TSC
+HostCLR=MS.NET 4.0.30319.42000, Arch=64-bit RELEASE [RyuJIT]
+JitModules=clrjit-v4.6.1055.0
+</code></pre>
+<pre><code>Runtime=Core  Platform=X64  Jit=RyuJit  
+</code></pre>
+
+<table>
+<tr><th>       Method</th><th>Median</th><th>StdDev</th><th>Scaled</th><th>Delta</th><th>Gen 0</th><th>Gen 1</th><th>Gen 2</th><th>Bytes Allocated/Op</th>
+</tr><tr><td>TaskFromResult</td><td>9.6268 ns</td><td>0.1796 ns</td><td>1.00</td><td>Baseline</td><td>9.793,00</td><td>-</td><td>-</td><td>       31,43</td>
+</tr><tr><td>ValueTaskCtor</td><td>1.6605 ns</td><td>0.0567 ns</td><td>0.17</td><td>-82.8%</td><td> -</td><td>-</td><td>-</td><td>        0,00</td>
+</tr><tr><td>ValueTaskFromResult</td><td>1.7420 ns</td><td>0.1672 ns</td><td>0.18</td><td>-81.9%</td><td> -</td><td>-</td><td>-</td><td>        0,00</td>
+</tr></table>
