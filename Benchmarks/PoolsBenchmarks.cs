@@ -1,10 +1,17 @@
 ﻿using System.Buffers;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Configs;
+using BenchmarkDotNet.Order;
+using BenchmarkDotNet.Reports;
+using BenchmarkDotNet.Running;
+using System.Linq;
 
 namespace Benchmarks
 {
+    //[Config(typeof(PoolsBenchmarksConfig))]
     public class PoolsBenchmarks
     {
         //[Params((int)1E+2, // 100 bytes
@@ -14,7 +21,7 @@ namespace Benchmarks
         //    (int)1E+6, // 1 000 000 bytes = 1 MB
         //    (int)1E+7, // 10 000 000 bytes = 10 MB
         //    (int)1E+8)] // 100 000 000 bytes = 100 MB
-        public int Bytes = 1000000;
+        public int Bytes = 10000000 ;
 
         private ArrayPool<byte> _dedicatedManagedPool;
 
@@ -92,6 +99,30 @@ namespace Benchmarks
         [MethodImpl(MethodImplOptions.NoInlining)]
         private unsafe void Blackhole(byte* input)
         {
+        }
+    }
+
+    internal class PoolsBenchmarksConfig : ManualConfig
+    {
+        public PoolsBenchmarksConfig()
+        {
+            Set(new SlowestToFastestOrderProvider());
+        }
+
+        private class SlowestToFastestOrderProvider : IOrderProvider
+        {
+            public IEnumerable<Benchmark> GetExecutionOrder(Benchmark[] benchmarks) =>
+                from benchmark in benchmarks
+                orderby benchmark.Parameters["Bytes"] descending,
+                        benchmark.Target.MethodTitle
+                select benchmark;
+
+            public IEnumerable<Benchmark> GetSummaryOrder(Benchmark[] benchmarks, Summary summary) =>
+                from benchmark in benchmarks
+                orderby summary[benchmark]?.ResultStatistics?.Median descending
+                select benchmark;
+
+            public string GetGroupKey(Benchmark benchmark, Summary summary) => null;
         }
     }
 }
