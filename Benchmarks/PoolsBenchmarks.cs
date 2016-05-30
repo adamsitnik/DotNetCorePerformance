@@ -5,16 +5,16 @@ using BenchmarkDotNet.Attributes;
 
 namespace Benchmarks
 {
-    public class ArrayPoolBenchmarks
+    public class PoolsBenchmarks
     {
-        [Params((int)1E+2, // 100 bytes
-            (int)1E+3, // 1 000 bytes = 1 KB
-            (int)1E+4, // 10 000 bytes = 10 KB
-            (int)1E+5, // 100 000 bytes = 100 KB
-            (int)1E+6, // 1 000 000 bytes = 1 MB
-            (int)1E+7, // 10 000 000 bytes = 10 MB
-            (int)1E+8)] // 100 000 000 bytes = 100 MB
-        public int Bytes;
+        //[Params((int)1E+2, // 100 bytes
+        //    (int)1E+3, // 1 000 bytes = 1 KB
+        //    (int)1E+4, // 10 000 bytes = 10 KB
+        //    (int)1E+5, // 100 000 bytes = 100 KB
+        //    (int)1E+6, // 1 000 000 bytes = 1 MB
+        //    (int)1E+7, // 10 000 000 bytes = 10 MB
+        //    (int)1E+8)] // 100 000 000 bytes = 100 MB
+        public int Bytes = 1000000;
 
         private ArrayPool<byte> _dedicatedManagedPool;
 
@@ -25,21 +25,21 @@ namespace Benchmarks
             _dedicatedManagedPool = ArrayPool<byte>.Create(maxArrayLength: Bytes + 1, maxArraysPerBucket: 1);
         }
 
-        [Benchmark(Baseline = true, Description = "new byte[]")]
+        [Benchmark(Baseline = true, Description = "new")]
         public void Allocate()
         {
             var array = new byte[Bytes];
             Blackhole(array);
         }
 
-        [Benchmark(Description = "stackalloc byte[]")]
+        [Benchmark(Description = "stackalloc")]
         public unsafe void AllocateWithStackalloc()
         {
             var array = stackalloc byte[Bytes];
             Blackhole(array);
         }
 
-        [Benchmark(Description = "Marshal.AllocHGlobal()")]
+        [Benchmark(Description = "Marshal")]
         public void AllocateWithMarshall()
         {
             var arrayPointer = Marshal.AllocHGlobal(Bytes);
@@ -47,7 +47,7 @@ namespace Benchmarks
             Marshal.FreeHGlobal(arrayPointer);
         }
 
-        [Benchmark(Description = "ArrayPool<byte>.Shared.Rent()")]
+        [Benchmark(Description = "ArrayPool.Shared")]
         public void RentManagedFromShared()
         {
             var buffer = ArrayPool<byte>.Shared.Rent(Bytes);
@@ -56,7 +56,7 @@ namespace Benchmarks
             ArrayPool<byte>.Shared.Return(buffer);
         }
 
-        [Benchmark(Description = "DedicatedManagedPool.Rent()")]
+        [Benchmark(Description = "SizeAware")]
         public void RentManagedFromDedicated()
         {
             var buffer = _dedicatedManagedPool.Rent(Bytes);
@@ -65,7 +65,7 @@ namespace Benchmarks
             _dedicatedManagedPool.Return(buffer);
         }
 
-        [Benchmark(Description = "NativeBufferPool<byte>.Shared.RentBuffer()")]
+        [Benchmark(Description = "NativePool.Shared")]
         public void RentUnmanaged()
         {
             var buffer = NativeBufferPool<byte>.SharedByteBufferPool.RentBuffer(Bytes);
