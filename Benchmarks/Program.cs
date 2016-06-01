@@ -23,7 +23,7 @@ namespace Benchmarks
             var config = ManualConfig.CreateEmpty()
                 //.With(Job.Dry.With(Runtime.Clr).With(Platform.X64).With(Framework.V46).With(Jit.RyuJit).With(Mode.Throughput).WithWarmupCount(1).WithTargetCount(1))
                 //.With(Job.Dry.With(Runtime.Core).With(Platform.X64).With(Jit.RyuJit).With(Mode.Throughput).WithWarmupCount(1).WithTargetCount(20))
-                .With(Job.Dry.With(Runtime.Core).With(Platform.X64).With(Jit.RyuJit).With(Mode.SingleRun))
+                .With(Job.Dry.With(Runtime.Core).With(Platform.X64).With(Jit.RyuJit).With(Mode.SingleRun).WithLaunchCount(10))
                 .With(DefaultConfig.Instance.GetLoggers().ToArray())
                 .With(PropertyColumn.Method, PropertyColumn.Runtime, PropertyColumn.Platform, PropertyColumn.Jit, StatisticColumn.Median, StatisticColumn.StdDev, StatisticColumn.Max, StatisticColumn.Min, BaselineDiffColumn.Scaled, BaselineDiffColumn.Delta)
                 .With(MarkdownExporter.Default)
@@ -36,12 +36,12 @@ namespace Benchmarks
 #if CLASSIC
             // the parent process is Classic Desktop Clr, but the child process is CoreClr
             // so we can use memory diagnoser and attach to it and get it working for .NET Core!
-            //config = config.With(new BenchmarkDotNet.Diagnostics.Windows.MemoryDiagnoser());
+            config = config.With(new BenchmarkDotNet.Diagnostics.Windows.MemoryDiagnoser());
             //config = config.With(new BenchmarkDotNet.Diagnostics.Windows.InliningDiagnoser());
 #endif
 
             BenchmarkRunner
-                .Run<AllocationBenchmarks>(config);
+                .Run<SmallAllocationBenchmarks>(config);
         }
 
         private class SlowestToFastestOrderProviderWithoutParameters : IOrderProvider

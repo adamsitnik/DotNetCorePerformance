@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using BenchmarkDotNet.Attributes;
 
@@ -30,6 +31,8 @@ namespace Benchmarks
 
     public class AllocationBenchmarks
     {
+        private List<byte[]> instances = new List<byte[]>(10);
+
         public virtual int Bytes { get; set; }
 
         [Benchmark(Baseline = true, Description = "new")]
@@ -37,6 +40,11 @@ namespace Benchmarks
         {
             var array = new byte[Bytes];
             Blackhole(array);
+
+            // I am NOT freeing the memory on Purpose
+            // I want to test the allocation speed, not the GC throughput
+            // this method is supposed to be called twice per each launch: once for JIT warmup, second time for the target
+            instances.Add(array);
         }
 
         [Benchmark(Description = "Marshal")]
