@@ -14,14 +14,14 @@ namespace Benchmarks
     //[Config(typeof(PoolsBenchmarksConfig))]
     public class PoolsBenchmarks
     {
-        //[Params((int)1E+2, // 100 bytes
-        //    (int)1E+3, // 1 000 bytes = 1 KB
-        //    (int)1E+4, // 10 000 bytes = 10 KB
-        //    (int)1E+5, // 100 000 bytes = 100 KB
-        //    (int)1E+6, // 1 000 000 bytes = 1 MB
-        //    (int)1E+7, // 10 000 000 bytes = 10 MB
-        //    (int)1E+8)] // 100 000 000 bytes = 100 MB
-        public int Bytes = 10000000 ;
+        [Params((int)1E+2, // 100 bytes
+            (int)1E+3, // 1 000 bytes = 1 KB
+            (int)1E+4, // 10 000 bytes = 10 KB
+            (int)1E+5, // 100 000 bytes = 100 KB
+            (int)1E+6, // 1 000 000 bytes = 1 MB
+            (int)1E+7, // 10 000 000 bytes = 10 MB
+            (int)1E+8)] // 100 000 000 bytes = 100 MB
+        public int Bytes;
 
         private ArrayPool<byte> _dedicatedManagedPool;
 
@@ -46,13 +46,14 @@ namespace Benchmarks
             Blackhole(array);
         }
 
-        [Benchmark(Description = "Marshal")]
-        public void AllocateWithMarshall()
-        {
-            var arrayPointer = Marshal.AllocHGlobal(Bytes);
-            Blackhole(arrayPointer);
-            Marshal.FreeHGlobal(arrayPointer);
-        }
+        // it does not prove anything, because single block of memory would be reused all the time
+        //[Benchmark(Description = "Marshal")]
+        //public void AllocateWithMarshall()
+        //{
+        //    var arrayPointer = Marshal.AllocHGlobal(Bytes);
+        //    Blackhole(arrayPointer);
+        //    Marshal.FreeHGlobal(arrayPointer);
+        //}
 
         [Benchmark(Description = "ArrayPool.Shared")]
         public void RentManagedFromShared()

@@ -21,15 +21,19 @@ namespace Benchmarks
         public static void Main(string[] args)
         {
             var config = ManualConfig.CreateEmpty()
+                // uncomment to benchmark classic Clr
                 //.With(Job.Dry.With(Runtime.Clr).With(Platform.X64).With(Framework.V46).With(Jit.RyuJit).With(Mode.Throughput).WithWarmupCount(1).WithTargetCount(1))
-                //.With(Job.Dry.With(Runtime.Core).With(Platform.X64).With(Jit.RyuJit).With(Mode.Throughput).WithWarmupCount(1).WithTargetCount(20))
-                .With(Job.Dry.With(Runtime.Core).With(Platform.X64).With(Jit.RyuJit).With(Mode.SingleRun).WithLaunchCount(10))
+                .With(Job.Dry.With(Runtime.Core).With(Platform.X64).With(Jit.RyuJit).With(Mode.Throughput).WithWarmupCount(1).WithTargetCount(20))
+                // uncomment to benchmark allocations
+                //.With(Job.Dry.With(Runtime.Core).With(Platform.X64).With(Jit.RyuJit).With(Mode.SingleRun).WithLaunchCount(10))
                 .With(DefaultConfig.Instance.GetLoggers().ToArray())
                 .With(PropertyColumn.Method, PropertyColumn.Runtime, PropertyColumn.Platform, PropertyColumn.Jit, StatisticColumn.Median, StatisticColumn.StdDev, StatisticColumn.Max, StatisticColumn.Min, BaselineDiffColumn.Scaled, BaselineDiffColumn.Delta)
                 .With(MarkdownExporter.Default)
                 .With(HtmlExporter.Default)
-                .With(CsvMeasurementsExporter.Default)
-                .With(RPlotExporter.Default)
+                // uncomment to get image representation
+                //.With(CsvMeasurementsExporter.Default)
+                //.With(RPlotExporter.Default)
+                // uncomment to sort the results 
                 //.With(new SlowestToFastestOrderProviderWithoutParameters())
                 .RemoveBenchmarkFiles();
 
@@ -37,11 +41,12 @@ namespace Benchmarks
             // the parent process is Classic Desktop Clr, but the child process is CoreClr
             // so we can use memory diagnoser and attach to it and get it working for .NET Core!
             config = config.With(new BenchmarkDotNet.Diagnostics.Windows.MemoryDiagnoser());
+            // uncomment to check inlining
             //config = config.With(new BenchmarkDotNet.Diagnostics.Windows.InliningDiagnoser());
 #endif
 
             BenchmarkRunner
-                .Run<SmallAllocationBenchmarks>(config);
+                .Run<PoolsBenchmarks>(config);
         }
 
         private class SlowestToFastestOrderProviderWithoutParameters : IOrderProvider
@@ -54,13 +59,6 @@ namespace Benchmarks
                 select benchmark;
 
             public string GetGroupKey(Benchmark benchmark, Summary summary) => null;
-        }
-
-        private static IJob SingleRunWithoutWarmup(IJob job)
-        {
-            return job
-                .With(Mode.SingleRun)
-                .WithWarmupCount(0);
         }
     }
 }
