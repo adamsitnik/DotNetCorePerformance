@@ -76,10 +76,10 @@ namespace Benchmarks
         [Benchmark(Description = "NativePool.Shared")]
         public void RentUnmanaged()
         {
-            var buffer = NativeBufferPool<byte>.SharedByteBufferPool.RentBuffer(Bytes);
+            var buffer =  NativeBufferPool.Shared.Rent(Bytes);
             Blackhole(buffer);
 
-            NativeBufferPool<byte>.SharedByteBufferPool.ReturnBuffer(ref buffer);
+            NativeBufferPool.Shared.Return(buffer);
         }
 
         // it fails without any reason given ;/
@@ -115,7 +115,7 @@ namespace Benchmarks
             public IEnumerable<Benchmark> GetExecutionOrder(Benchmark[] benchmarks) =>
                 from benchmark in benchmarks
                 orderby benchmark.Parameters["Bytes"] descending,
-                        benchmark.Target.MethodTitle
+                        benchmark.Target.DisplayInfo
                 select benchmark;
 
             public IEnumerable<Benchmark> GetSummaryOrder(Benchmark[] benchmarks, Summary summary) =>

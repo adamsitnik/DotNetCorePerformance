@@ -10,11 +10,11 @@
   },
 
   "dependencies": {
-    "BenchmarkDotNet": "0.9.7-beta",
-    "System.Threading.Tasks.Extensions": "4.0.0-rc2-24027",
-    "System.Buffers": "4.0.0-rc2-24027",
-    "System.Buffers.Experimental": "0.1.0-e160527-1",
-    "System.Slices": "0.1.0-e160527-1"
+    "BenchmarkDotNet": "0.10.2",
+    "System.Threading.Tasks.Extensions": "4.3.0",
+    "System.Buffers": "4.3.0",
+    "System.Buffers.Experimental": "0.1.0-e160804-1",
+    "System.Slices": "0.1.0-e160611-1"
   },
 
   "frameworks": {
@@ -23,20 +23,20 @@
         "define": [ "CLASSIC" ]
       },
       "dependencies": {
-        "BenchmarkDotNet.Diagnostics.Windows": "0.9.7"
+        "BenchmarkDotNet.Diagnostics.Windows": "0.10.2"
       },
       "frameworkAssemblies": {
         "System.Threading.Tasks": "4.0.10.0"
       }
     },
-    "netcoreapp1.0": {
+    "netcoreapp1.1": {
       "buildOptions": {
         "define": [ "CORE" ]
       },
       "dependencies": {
         "Microsoft.NETCore.App": {
           "type": "platform",
-          "version": "1.0.0-rc2-3002702"
+          "version": "1.1.0"
         }
       }
     }

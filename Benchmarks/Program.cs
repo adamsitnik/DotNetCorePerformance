@@ -5,6 +5,8 @@ using BenchmarkDotNet.Jobs;
 using BenchmarkDotNet.Running;
 using BenchmarkDotNet.Columns;
 using System.Linq;
+using BenchmarkDotNet.Diagnosers;
+using BenchmarkDotNet.Environments;
 using BenchmarkDotNet.Order;
 using BenchmarkDotNet.Reports;
 
@@ -14,8 +16,8 @@ namespace Benchmarks
     {
         /// <summary>
         /// execute from cmd with: 
-        ///     "dotnet run --framework net46 --configuration Release" (with Memory Diagnostics)
-        ///     "dotnet run --framework netcoreapp1.0 --configuration Release" (without Memory Diagnostics but cross platform)
+        ///     "dotnet run --framework net46 --configuration Release"
+        ///     "dotnet run --framework netcoreapp1.1 --configuration Release"
         /// </summary>
         /// <param name="args"></param>
         public static void Main(string[] args)
@@ -23,30 +25,31 @@ namespace Benchmarks
             var config = ManualConfig.CreateEmpty()
                 // uncomment to benchmark classic Clr
                 //.With(Job.Dry.With(Runtime.Clr).With(Platform.X64).With(Framework.V46).With(Jit.RyuJit).With(Mode.Throughput).WithWarmupCount(1).WithTargetCount(1))
-                .With(Job.Dry.With(Runtime.Core).With(Platform.X64).With(Jit.RyuJit).With(Mode.Throughput).WithWarmupCount(1).WithTargetCount(20))
+                .With(Job.Default)
                 // uncomment to benchmark allocations
                 //.With(Job.Dry.With(Runtime.Core).With(Platform.X64).With(Jit.RyuJit).With(Mode.SingleRun).WithLaunchCount(10))
                 .With(DefaultConfig.Instance.GetLoggers().ToArray())
-                .With(PropertyColumn.Method, PropertyColumn.Runtime, PropertyColumn.Platform, PropertyColumn.Jit, StatisticColumn.Median, StatisticColumn.StdDev, StatisticColumn.Max, StatisticColumn.Min, BaselineDiffColumn.Scaled, BaselineDiffColumn.Delta)
-                .With(MarkdownExporter.Default)
+                .With(DefaultConfig.Instance.GetColumnProviders().ToArray())
+                //.With(PropertyColumn.Method, PropertyColumn.Runtime, PropertyColumn.Platform, PropertyColumn.Jit, StatisticColumn.Median, StatisticColumn.StdDev, StatisticColumn.Max, StatisticColumn.Min, BaselineDiffColumn.Scaled, BaselineDiffColumn.Delta)
+                .With(MarkdownExporter.GitHub)
                 .With(HtmlExporter.Default)
+                .With(MemoryDiagnoser.Default)
                 // uncomment to get image representation
                 //.With(CsvMeasurementsExporter.Default)
                 //.With(RPlotExporter.Default)
                 // uncomment to sort the results 
                 //.With(new SlowestToFastestOrderProviderWithoutParameters())
-                .RemoveBenchmarkFiles();
+                .KeepBenchmarkFiles();
 
 #if CLASSIC
             // the parent process is Classic Desktop Clr, but the child process is CoreClr
             // so we can use memory diagnoser and attach to it and get it working for .NET Core!
-            config = config.With(new BenchmarkDotNet.Diagnostics.Windows.MemoryDiagnoser());
             // uncomment to check inlining
             //config = config.With(new BenchmarkDotNet.Diagnostics.Windows.InliningDiagnoser());
 #endif
 
             BenchmarkRunner
-                .Run<PoolsBenchmarks>(config);
+                .Run<LargeObjectHeapBenchmarks>(config);
         }
 
         private class SlowestToFastestOrderProviderWithoutParameters : IOrderProvider
