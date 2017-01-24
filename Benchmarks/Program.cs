@@ -25,11 +25,12 @@ namespace Benchmarks
             var config = ManualConfig.CreateEmpty()
                 // uncomment to benchmark classic Clr
                 //.With(Job.Dry.With(Runtime.Clr).With(Platform.X64).With(Framework.V46).With(Jit.RyuJit).With(Mode.Throughput).WithWarmupCount(1).WithTargetCount(1))
-                .With(Job.Default)
+                .With(Job.Default.With(new GcMode() { Force = false, Concurrent = true, Server = false }))
                 // uncomment to benchmark allocations
                 //.With(Job.Dry.With(Runtime.Core).With(Platform.X64).With(Jit.RyuJit).With(Mode.SingleRun).WithLaunchCount(10))
                 .With(DefaultConfig.Instance.GetLoggers().ToArray())
                 .With(DefaultConfig.Instance.GetColumnProviders().ToArray())
+                .With(StatisticColumn.Min, StatisticColumn.Max, StatisticColumn.Median, StatisticColumn.Mean)
                 //.With(PropertyColumn.Method, PropertyColumn.Runtime, PropertyColumn.Platform, PropertyColumn.Jit, StatisticColumn.Median, StatisticColumn.StdDev, StatisticColumn.Max, StatisticColumn.Min, BaselineDiffColumn.Scaled, BaselineDiffColumn.Delta)
                 .With(MarkdownExporter.GitHub)
                 .With(HtmlExporter.Default)
